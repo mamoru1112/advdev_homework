@@ -125,6 +125,8 @@ podTemplate(
                 rc = openshift.selector("rc", "tasks-${dc_version}").object()
               }
 
+              openshift.set("env", "dc/tasks", "VERSION='${devTag} (tasks-dev)'")
+
             }
           }
         }
@@ -183,6 +185,9 @@ podTemplate(
               sleep 5
               rc_prod = openshift.selector("rc", "${destApp}-${dc_version}").object()
             }
+
+            openshift.set("env", "dc/tasks-blue", "VERSION='${prodTag} (tasks-blue)'")
+            openshift.set("env", "dc/tasks-green", "VERSION='${prodTag} (tasks-blue)'")
 
           }
         }
