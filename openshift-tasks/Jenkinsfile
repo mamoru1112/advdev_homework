@@ -113,6 +113,8 @@ podTemplate(
               openshift.selector('configmap', 'tasks-config').delete()
               openshift.create('configmap', 'tasks-config', '--from-file=./configuration/application-users.properties', '--from-file=./configuration/application-roles.properties')
 
+              openshift.set("env", "dc/tasks", "VERSION='${devTag} (tasks-dev)'")
+
               openshift.selector("dc", "tasks").rollout().latest()
 
               def dc = openshift.selector("dc", "tasks").object()
@@ -124,8 +126,6 @@ podTemplate(
                 sleep 5
                 rc = openshift.selector("rc", "tasks-${dc_version}").object()
               }
-
-              openshift.set("env", "dc/tasks", "VERSION='${devTag} (tasks-dev)'")
 
             }
           }
@@ -175,6 +175,9 @@ podTemplate(
             openshift.selector("configmap", "${destApp}-config").delete()
             openshift.create("configmap", "${destApp}-config", "--from-file=./configuration/application-users.properties", "--from-file=./configuration/application-roles.properties" )
 
+            openshift.set("env", "dc/tasks-blue", "VERSION='${prodTag} (tasks-blue)'")
+            openshift.set("env", "dc/tasks-green", "VERSION='${prodTag} (tasks-green)'")
+
             openshift.selector("dc", "${destApp}").rollout().latest();
 
             def dc_prod = openshift.selector("dc", "${destApp}").object()
@@ -185,9 +188,6 @@ podTemplate(
               sleep 5
               rc_prod = openshift.selector("rc", "${destApp}-${dc_version}").object()
             }
-
-            openshift.set("env", "dc/tasks-blue", "VERSION='${prodTag} (tasks-blue)'")
-            openshift.set("env", "dc/tasks-green", "VERSION='${prodTag} (tasks-blue)'")
 
           }
         }
