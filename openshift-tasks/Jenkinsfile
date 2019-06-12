@@ -178,10 +178,10 @@ podTemplate(
             openshift.selector("configmap", "${destApp}-config").delete()
             openshift.create("configmap", "${destApp}-config", "--from-file=./configuration/application-users.properties", "--from-file=./configuration/application-roles.properties" )
 
-            // openshift.set("env", "dc/tasks-blue", "VERSION='${prodTag} (tasks-blue)'")
-            // openshift.set("env", "dc/tasks-green", "VERSION='${prodTag} (tasks-green)'")
+            openshift.set("env", "dc/tasks-blue", "VERSION='${prodTag} (tasks-blue)'")
+            openshift.set("env", "dc/tasks-green", "VERSION='${prodTag} (tasks-green)'")
 
-            openshift.set("env", "dc/${destApp}", "VERSION='${prodTag} ${destApp}'")
+            // openshift.set("env", "dc/${destApp}", "VERSION='${prodTag} (${destApp})'")
 
             openshift.selector("dc", "${destApp}").rollout().latest();
 
