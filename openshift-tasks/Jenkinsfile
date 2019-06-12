@@ -127,8 +127,7 @@ podTemplate(
                 rc = openshift.selector("rc", "tasks-${dc_version}").object()
               }
 
-              echo "rc.spec.replicas: " + rc.spec.replicas
-              echo "rc.status.readyReplicas: " + rc.status.readyReplicas
+              sleep 60
 
             }
           }
@@ -194,8 +193,7 @@ podTemplate(
               rc_prod = openshift.selector("rc", "${destApp}-${dc_prod_version}").object()
             }
 
-            echo "rc_prod.spec.replicas: " + rc_prod.spec.replicas
-            echo "rc_prod.status.readyReplicas: " + rc_prod.status.readyReplicas
+            sleep 60
 
           }
         }
